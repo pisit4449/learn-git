@@ -4,4 +4,4 @@ lastname = 'sukito'
 print(name, lastname)
 print('test')
 print('testtest')
-print('testtesteesteestesttttttt')
+print('testtesteesteestestttttttะะะะ')
