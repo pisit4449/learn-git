@@ -1,7 +1,17 @@
+# =========== Up git ==============================================
+# git add README.md
+# git commit -m "first commit"
+# git branch -M main
+# git remote add origin https://github.com/pisit4449/CoffeeManager.git
+# git push -u origin main
+#==================================================================
 from tkinter import *
 from tkinter import ttk, messagebox
+from menufunction import *
 
+addproduct = AddProduct()
 
+# ==============================================================================================
 root = Tk()
 root.title("โปรแกรมร้านกาแฟ Pupea Coffee")
 root.iconbitmap('images/dog.ico')
@@ -18,7 +28,7 @@ filemenu.add_command(label="Exit", font = 10,background='white', activebackgroun
 
 productmenu = Menu(menubar, tearoff=0)
 menubar.add_cascade(label='สินค้า', menu=productmenu)
-productmenu.add_cascade(label='เพิ่มสินค้า', font = 10)
+productmenu.add_cascade(label='เพิ่มสินค้า', font = 10, command=addproduct.command)
 productmenu.add_cascade(label='สต๊อคสินค้า', font = 10)
 
 membermenu = Menu(menubar, tearoff=0)
@@ -57,28 +67,21 @@ L = Label(SearchFrame, text="ค้นหาสินค้า", font=(None, 20)
 # ==============================================================================================
 # ========== ปุ่มเพิ่มสินค้าในการขาย  ==============================ช=================================
 allorder = {}
-product = {'espresso':{'name':'espresso','price':40},
-            'latte':{'name':'latte','price':50},
-            'capuchino':{'name':'capuchino','price':55},
-            'greentea':{'name':'greeentea','price':35},
-            'icetea':{'name':'icetea','price':30},
-            'hottea':{'name':'hottea','price':20},
-            'coco':{'name':'coco','price':60},
-            'lamon':{'name':'lamon','price':80},
-            'americano':{'name':'americano','price':80}}
+product = Product_List() # product = product_icon_list()
+# {1: {'id': 1, 'productid': 'A-1001', 'name': 'espresso', 'price': 50.0}
+
 # ใส่ค่าการสั่งซื้อเข้าไปใน  allmenu
-def AddAllOrder(name = 'espresso'):
+def AddMenu(name = 'espresso'):
     if name not in allorder:
-        allorder[name] = [product[name]['name'],product[name]['price'], 1, product[name]['price']]
+        allorder[name] = [product[name]['id'],product[name]['name'],product[name]['price'], 1, product[name]['price']]
     else:
         quan = allorder[name][2] + 1
         total = product[name]['price'] * quan
-        allorder[name] = [product[name]['name'],product[name]['price'], quan, total]
+        allorder[name] = [product[name]['id'],product[name]['name'],product[name]['price'], quan, total]
 
-    print('ALLORDER =========> ',allorder)
     # ALLMENU =========>  {'espresso': ['espresso', 40, 2, 80], 'latte': ['latte', 50, 2, 100]}
 # ========== สร้างปุ่มเพิ่มสินค้าในการขาย  ==============================ช=================================
-button_dict = {}
+# button_dict = {}
 icon_button = PhotoImage(file='images/dog-icon.png')
 row = 0
 column = 0
@@ -89,8 +92,10 @@ for k,p in product.items():
         row += 1
 
     B = Button(Main_button_Frame,text=p['name'],font=(None, 10),image=icon_button,compound='top')
+    B.config(command=lambda m = k : AddMenu(m))
+    # B.config(image=new_icon)
     B.grid(row=row,column=column,ipadx=40,ipady=10)
-    B.config(command=lambda m = k : AddAllOrder(m))
+    
 
     column += 1
 # ==============================================================================================
